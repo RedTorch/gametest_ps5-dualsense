@@ -26,7 +26,7 @@ namespace StarterAssets
         private bool isRightFoot = true;
         private float stepIntensity = 0.25f;
         private float jumpIntensity = 0.5f;
-        private bool jumpedThisFrame = false;
+        private float jumpHapticsStrength = 0f;
 
 
 
@@ -247,9 +247,10 @@ namespace StarterAssets
 
 
             // Haptics addon code:
-            if(jumpedThisFrame)
+            if(jumpHapticsStrength > 0f)
             {
-                gamepad.SetMotorSpeeds(jumpIntensity,jumpIntensity);
+                gamepad.SetMotorSpeeds(jumpHapticsStrength*jumpIntensity, jumpHapticsStrength*jumpIntensity);
+                jumpHapticsStrength -= (Time.deltaTime*4f);
             }
             else if(currentHorizontalSpeed > 0f && Grounded)
             {
@@ -280,7 +281,6 @@ namespace StarterAssets
                 gamepad.SetMotorSpeeds(0f,0f);
                 currInterval = 0f;
             }
-            jumpedThisFrame = false;
 
 
 
@@ -367,7 +367,7 @@ namespace StarterAssets
 
 
                     //Haptics addon code:
-                    jumpedThisFrame = true;
+                    jumpHapticsStrength = 1f;
 
 
 
